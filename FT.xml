@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for Windows (x86-64) 2016.2.1 (Build 803U_SU)" ts="2019-06-04 20:45:56">
+<Class name="FT.Adres">
+<Abstract>1</Abstract>
+<Super>%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
+<TimeChanged>65165,56855.9998</TimeChanged>
+<TimeCreated>65165,56213.140083</TimeCreated>
+
+<Property name="Ulica">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Miasto">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="KodPocztowy">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+</Class>
+
+
+<Class name="FT.Dostawa">
+<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
+<TimeChanged>65167,47790.907747</TimeChanged>
+<TimeCreated>65165,56856.944281</TimeCreated>
+
+<Property name="Nazwa">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Stan">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Cena">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Koordynowana">
+<Type>FT.Kierowca</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Koordynuje</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^FT.DostawaD</DataLocation>
+<DefaultData>DostawaDefaultData</DefaultData>
+<IdLocation>^FT.DostawaD</IdLocation>
+<IndexLocation>^FT.DostawaI</IndexLocation>
+<StreamLocation>^FT.DostawaS</StreamLocation>
+<Data name="DostawaDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Nazwa</Value>
+</Value>
+<Value name="3">
+<Value>Stan</Value>
+</Value>
+<Value name="4">
+<Value>Koordynowana</Value>
+</Value>
+<Value name="5">
+<Value>Cena</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="FT.Inspektor">
+<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor,FT.Osoba</Super>
+<TimeChanged>65167,8704.272085</TimeChanged>
+<TimeCreated>65165,56504.094918</TimeCreated>
+
+<Property name="Pesel">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="NrTel">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Kontroluje">
+<Type>FT.Kierowca</Type>
+<Cardinality>many</Cardinality>
+<Inverse>Kontrolowany</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Method name="PokazDane">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	Return "Imię: "_..Imie_" Nazwisko: "_..Nazwisko_" PESEL: "_..Pesel_" Numer telefonu "_..NrTel
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^FT.InspektorD</DataLocation>
+<DefaultData>InspektorDefaultData</DefaultData>
+<IdLocation>^FT.InspektorD</IdLocation>
+<IndexLocation>^FT.InspektorI</IndexLocation>
+<StreamLocation>^FT.InspektorS</StreamLocation>
+<Data name="InspektorDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Imie</Value>
+</Value>
+<Value name="3">
+<Value>Miasto</Value>
+</Value>
+<Value name="4">
+<Value>KodPocztowy</Value>
+</Value>
+<Value name="5">
+<Value>Nazwisko</Value>
+</Value>
+<Value name="6">
+<Value>NrTel</Value>
+</Value>
+<Value name="7">
+<Value>Pesel</Value>
+</Value>
+<Value name="8">
+<Value>Ulica</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="FT.Kierowca">
+<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor,FT.Osoba</Super>
+<TimeChanged>65167,47791.255819</TimeChanged>
+<TimeCreated>65165,56856.241435</TimeCreated>
+
+<Property name="Pensja">
+<Type>Stawka</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="ZmianaPensji">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="Pesel">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="NrTel">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Kontrolowany">
+<Type>FT.Inspektor</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Kontroluje</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Property name="Koordynuje">
+<Type>FT.Dostawa</Type>
+<Cardinality>many</Cardinality>
+<Inverse>Koordynowana</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Method name="PokazDane">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	Return "Imię: "_..Imie_" Nazwisko: "_..Nazwisko_" PESEL: "_..Pesel_" Numer telefonu "_..NrTel
+]]></Implementation>
+</Method>
+
+<Method name="PokazKontrolujacego">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	Return "Imię inspektora: "_..Kontrolowany.Imie_" Nazwisko inspektora: "_..Kontrolowany.Nazwisko_" PESEL inspektora: "_..Kontrolowany.Pesel
+]]></Implementation>
+</Method>
+
+<Method name="PokazFinalneWynagrodzenie">
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[
+	Set P = ..Pensja.Wynagrodzenie + ..ZmianaPensji
+	Return "Pensja ostateczna to: "_P
+]]></Implementation>
+</Method>
+
+<Method name="ZmienStanDostawy">
+<FormalSpec>Nazwa,NowyStan</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+  set Nazwa.Stan = NowyStan
+  Return NowyStan
+]]></Implementation>
+</Method>
+
+<Method name="ZmienCeneDostawy">
+<FormalSpec>Nazwa,NowaCena</FormalSpec>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[
+  set Nazwa.Cena = NowaCena
+  Return NowaCena
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^FT.KierowcaD</DataLocation>
+<DefaultData>KierowcaDefaultData</DefaultData>
+<IdLocation>^FT.KierowcaD</IdLocation>
+<IndexLocation>^FT.KierowcaI</IndexLocation>
+<StreamLocation>^FT.KierowcaS</StreamLocation>
+<Data name="KierowcaDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Imie</Value>
+</Value>
+<Value name="3">
+<Value>Miasto</Value>
+</Value>
+<Value name="4">
+<Value>KodPocztowy</Value>
+</Value>
+<Value name="5">
+<Value>NrTel</Value>
+</Value>
+<Value name="6">
+<Value>Kontrolowany</Value>
+</Value>
+<Value name="7">
+<Value>Nazwisko</Value>
+</Value>
+<Value name="8">
+<Value>Pensja</Value>
+</Value>
+<Value name="9">
+<Value>Pesel</Value>
+</Value>
+<Value name="10">
+<Value>Ulica</Value>
+</Value>
+<Value name="11">
+<Value>ZmianaPensji</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="FT.Osoba">
+<Abstract>1</Abstract>
+<Super>%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor,FT.Adres</Super>
+<TimeChanged>65167,5283.921578</TimeChanged>
+<TimeCreated>65165,56305.471611</TimeCreated>
+
+<Property name="Imie">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="Nazwisko">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Method name="PokazDane">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[	Return "Imię: "_..Imie_" Nazwisko: "_..Nazwisko
+]]></Implementation>
+</Method>
+</Class>
+
+
+<Class name="FT.Stawka">
+<Super>%SerialObject,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor</Super>
+<TimeChanged>65165,56858.65276</TimeChanged>
+<TimeCreated>65165,56856.488992</TimeCreated>
+
+<Property name="Wynagrodzenie">
+<Type>%Integer</Type>
+<Required>1</Required>
+</Property>
+
+<Storage name="Default">
+<Type>%Library.CacheSerialState</Type>
+<State>StawkaState</State>
+<StreamLocation>^FT.StawkaS</StreamLocation>
+<Data name="StawkaState">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>Wynagrodzenie</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="FT.Zamawiajacy">
+<Super>%Persistent,%Populate,%XML.Adaptor,%ZEN.DataModel.Adaptor,FT.Osoba</Super>
+<TimeChanged>65167,72503.184529</TimeChanged>
+<TimeCreated>65165,56856.733625</TimeCreated>
+
+<Method name="PokazAdres">
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	Set PokazAdres = "Ulica: " _..Ulica_" Miasto: "_..Miasto_" Kod Pocztowy: "_..KodPocztowy
+	Return PokazAdres
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Library.CacheStorage</Type>
+<DataLocation>^FT.ZamawiajacyD</DataLocation>
+<DefaultData>ZamawiajacyDefaultData</DefaultData>
+<IdLocation>^FT.ZamawiajacyD</IdLocation>
+<IndexLocation>^FT.ZamawiajacyI</IndexLocation>
+<StreamLocation>^FT.ZamawiajacyS</StreamLocation>
+<Data name="ZamawiajacyDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Imie</Value>
+</Value>
+<Value name="3">
+<Value>Miasto</Value>
+</Value>
+<Value name="4">
+<Value>KodPocztowy</Value>
+</Value>
+<Value name="5">
+<Value>Nazwisko</Value>
+</Value>
+<Value name="6">
+<Value>Ulica</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+</Export>
